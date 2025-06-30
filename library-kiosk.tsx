@@ -328,7 +328,7 @@ export default function LibraryKiosk() {
             </div>
           </div>
           
-          {/* Örnek Button */}
+          {/* Tanıtım Button */}
           <Button
             onClick={() => setShowKioskExamples(true)}
             variant="outline"
@@ -336,7 +336,7 @@ export default function LibraryKiosk() {
             className="flex items-center gap-2 text-slate-600 hover:text-slate-800 border-slate-300 hover:border-slate-400"
           >
             <Eye className="h-4 w-4" />
-            Örnek
+            Tanıtım
           </Button>
         </div>
       </div>
@@ -1392,8 +1392,8 @@ export default function LibraryKiosk() {
               </p>
             </motion.div>
 
-            {/* Close Buttons */}
-            <div className="mt-8 flex gap-4 justify-center">
+            {/* Close Button */}
+            <div className="mt-8 text-center">
               <Button
                 onClick={() => {
                   setShowKioskExamples(false)
@@ -1404,13 +1404,6 @@ export default function LibraryKiosk() {
                 className="px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-2xl shadow-lg"
               >
                 ✓ Tamam, Anladım
-              </Button>
-              <Button
-                onClick={() => setShowKioskExamples(false)}
-                variant="outline"
-                className="px-8 py-3 rounded-2xl border-2"
-              >
-                Şimdilik Kapat
               </Button>
             </div>
           </motion.div>
