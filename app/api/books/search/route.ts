@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
 
 // Updated mock data with new structure
 const mockBooks = [
@@ -60,20 +59,14 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const { data: books, error } = await supabase
-      .from("books")
-      .select("id, kitap_ismi, yazar_ismi, turu")
-      .or(
-        `kitap_ismi.ilike.%${query}%,yazar_ismi.ilike.%${query}%,turu.ilike.%${query}%`
-      )
-      .limit(limit)
+    // Mock search functionality
+    const filteredBooks = mockBooks.filter(book =>
+      book.title.toLowerCase().includes(query.toLowerCase()) ||
+      book.author.toLowerCase().includes(query.toLowerCase()) ||
+      book.genre.toLowerCase().includes(query.toLowerCase())
+    ).slice(0, limit)
 
-    if (error) {
-      console.error("Supabase error:", error)
-      return NextResponse.json({ error: "Veritabanı hatası" }, { status: 500 })
-    }
-
-    return NextResponse.json({ books })
+    return NextResponse.json({ books: filteredBooks })
   } catch (error) {
     console.error("Search error:", error)
     return NextResponse.json({ error: "Arama yapılamadı" }, { status: 500 })

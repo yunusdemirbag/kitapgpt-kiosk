@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { supabase } from "@/lib/supabase"
 
 // Mock kitap veritabanı - gerçek veritabanı bağlantısı kurulana kadar
 const mockBooksDatabase = [
