@@ -1148,7 +1148,7 @@ export default function LibraryKiosk() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex-1 flex items-center justify-center px-2"
+              className="flex-1 overflow-y-auto max-h-[calc(100vh-400px)] px-2 py-4"
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
@@ -1160,7 +1160,7 @@ export default function LibraryKiosk() {
                   <span>Kitap bulunamadı.</span>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-4 w-full max-w-lg">
+                <div className="grid grid-cols-2 gap-4 w-full max-w-lg pb-4">
                   {filteredBooks.map((book, index) => (
                     <motion.div
                       key={book.id}
@@ -1247,21 +1247,23 @@ export default function LibraryKiosk() {
               )}
             </motion.div>
 
-            {/* COMPACT Action Buttons */}
-            <div className="mt-4 flex gap-2 justify-center">
-              <Button
-                onClick={resetToHome}
-                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg shadow-lg text-xs"
-              >
-                Yeni Öneri Al
-              </Button>
-              <Button
-                onClick={handleAlternativeRecommendation}
-                className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg shadow-lg text-xs flex items-center gap-1"
-              >
-                <RefreshCw className="h-3 w-3" />
-                Farklı Kitap Önerisi İste
-              </Button>
+            {/* COMPACT Action Buttons - Fixed Bottom */}
+            <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-blue-100 p-4 mt-4">
+              <div className="flex gap-2 justify-center">
+                <Button
+                  onClick={resetToHome}
+                  className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg shadow-lg text-xs"
+                >
+                  Yeni Öneri Al
+                </Button>
+                <Button
+                  onClick={handleAlternativeRecommendation}
+                  className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg shadow-lg text-xs flex items-center gap-1"
+                >
+                  <RefreshCw className="h-3 w-3" />
+                  Farklı Kitap Önerisi İste
+                </Button>
+              </div>
             </div>
           </div>
         )}
