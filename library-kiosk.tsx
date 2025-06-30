@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 // Types
 interface LibraryBook {
@@ -19,6 +20,7 @@ interface LibraryBook {
 }
 
 export default function LibraryKiosk() {
+  const isMobile = useIsMobile()
   const [searchQuery, setSearchQuery] = useState("")
   const [favoriteBooks, setFavoriteBooks] = useState("")
   const [filteredBooks, setFilteredBooks] = useState<LibraryBook[]>([])
@@ -306,7 +308,7 @@ export default function LibraryKiosk() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white text-slate-800 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white text-slate-800 overflow-hidden touch-action-manipulation scroll-smooth">
       {/* Subtle Background Elements */}
       <div className="fixed inset-0 z-0 overflow-hidden">
         <div className="absolute top-20 left-10 w-32 h-32 bg-blue-100/30 rounded-full blur-3xl"></div>
@@ -315,16 +317,16 @@ export default function LibraryKiosk() {
       </div>
 
       {/* Header with Logo */}
-      <div className="relative z-10 bg-white/90 backdrop-blur-sm border-b border-blue-100 py-4 px-6 flex items-center justify-center shadow-sm">
+      <div className="relative z-10 bg-white/90 backdrop-blur-sm border-b border-blue-100 py-3 md:py-4 px-4 md:px-6 flex items-center justify-center shadow-sm">
         <div className="w-full max-w-2xl flex items-center justify-between">
           {/* University logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
-              <Book className="h-7 w-7 text-white" />
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg md:rounded-xl flex items-center justify-center shadow-lg">
+              <Book className="h-5 w-5 md:h-7 md:w-7 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-slate-800">Bartın Üniversitesi</h1>
-              <p className="text-sm text-blue-600">Kütüphane Sistemi</p>
+              <h1 className="text-sm md:text-lg font-bold text-slate-800">Bartın Üniversitesi</h1>
+              <p className="text-xs md:text-sm text-blue-600">Kütüphane Sistemi</p>
             </div>
           </div>
           
@@ -332,16 +334,16 @@ export default function LibraryKiosk() {
           <Button
             onClick={() => setShowKioskExamples(true)}
             variant="outline"
-            size="sm"
-            className="flex items-center gap-2 text-slate-600 hover:text-slate-800 border-slate-300 hover:border-slate-400"
+            size={isMobile ? "sm" : "sm"}
+            className="flex items-center gap-1 md:gap-2 text-slate-600 hover:text-slate-800 border-slate-300 hover:border-slate-400 text-xs md:text-sm px-2 md:px-3"
           >
-            <Eye className="h-4 w-4" />
-            Tanıtım
+            <Eye className="h-3 w-3 md:h-4 md:w-4" />
+            {!isMobile && "Tanıtım"}
           </Button>
         </div>
       </div>
 
-      <div className="relative z-10 max-w-2xl mx-auto px-8 py-12 flex flex-col h-[calc(100vh-76px)] justify-center">
+      <div className="relative z-10 max-w-2xl mx-auto px-4 md:px-8 py-6 md:py-12 flex flex-col min-h-[calc(100vh-60px)] md:h-[calc(100vh-76px)] justify-center">
         {robotState === "preparing" ? (
           // Book Preparation Animation Screen - FULL SCREEN VERSION
           <div className="fixed inset-0 z-50 bg-gradient-to-br from-blue-900/90 via-blue-800/90 to-blue-900/90 backdrop-blur-md flex flex-col items-center justify-center">
@@ -692,8 +694,8 @@ export default function LibraryKiosk() {
                   transition={{ duration: 0.8, ease: "easeOut" }}
                   className="relative"
                 >
-                  {/* Robot Image - EXTRA LARGE for kiosk */}
-                  <div className={`relative ${robotState === "greeting" ? "w-96 h-96" : "w-80 h-80"}`}>
+                  {/* Robot Image - RESPONSIVE for all devices */}
+                  <div className={`relative ${robotState === "greeting" ? "w-48 h-48 md:w-96 md:h-96" : "w-40 h-40 md:w-80 md:h-80"}`}>
                     <motion.div
                       animate={
                         robotState === "greeting"
@@ -724,8 +726,8 @@ export default function LibraryKiosk() {
                       <Image
                         src={getRobotImage() || "/placeholder.svg"}
                         alt="Bartın Üniversitesi Kütüphane Asistanı"
-                        width={robotState === "greeting" ? 384 : 320}
-                        height={robotState === "greeting" ? 384 : 320}
+                        width={robotState === "greeting" ? (isMobile ? 192 : 384) : (isMobile ? 160 : 320)}
+                        height={robotState === "greeting" ? (isMobile ? 192 : 384) : (isMobile ? 160 : 320)}
                         className="w-full h-full object-contain"
                         priority
                       />
@@ -766,7 +768,7 @@ export default function LibraryKiosk() {
                             ease: "easeInOut",
                           }}
                         >
-                          <Sparkles className="h-8 w-8 text-yellow-400" />
+                          <Sparkles className="h-6 w-6 md:h-8 md:w-8 text-yellow-400" />
                         </motion.div>
 
                         {/* Sol el sparkle */}
@@ -784,7 +786,7 @@ export default function LibraryKiosk() {
                             delay: 0.5,
                           }}
                         >
-                          <Sparkles className="h-6 w-6 text-blue-400" />
+                          <Sparkles className="h-4 w-4 md:h-6 md:w-6 text-blue-400" />
                         </motion.div>
 
                         {/* Cam tıklama noktaları */}
@@ -833,7 +835,7 @@ export default function LibraryKiosk() {
                       }}
                       transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3 }}
                       className={`absolute -bottom-6 left-1/2 transform -translate-x-1/2 ${
-                        robotState === "greeting" ? "w-80 h-20" : "w-60 h-16"
+                        robotState === "greeting" ? "w-40 h-10 md:w-80 md:h-20" : "w-32 h-8 md:w-60 md:h-16"
                       } bg-blue-200/40 rounded-full blur-xl`}
                     ></motion.div>
 
@@ -847,7 +849,7 @@ export default function LibraryKiosk() {
                       transition={{ repeat: Number.POSITIVE_INFINITY, duration: 4 }}
                       className="absolute -top-4 -right-4"
                     >
-                      <Sparkles className={`${robotState === "greeting" ? "h-12 w-12" : "h-8 w-8"} text-blue-500`} />
+                      <Sparkles className={`${robotState === "greeting" ? "h-8 w-8 md:h-12 md:w-12" : "h-6 w-6 md:h-8 md:w-8"} text-blue-500`} />
                     </motion.div>
                     <motion.div
                       animate={{
@@ -858,7 +860,7 @@ export default function LibraryKiosk() {
                       transition={{ repeat: Number.POSITIVE_INFINITY, duration: 5 }}
                       className="absolute -bottom-4 -left-4"
                     >
-                      <Sparkles className={`${robotState === "greeting" ? "h-10 w-10" : "h-7 w-7"} text-blue-400`} />
+                      <Sparkles className={`${robotState === "greeting" ? "h-7 w-7 md:h-10 md:w-10" : "h-5 w-5 md:h-7 md:w-7"} text-blue-400`} />
                     </motion.div>
 
                     {/* Extra sparkles for greeting page */}
@@ -873,7 +875,7 @@ export default function LibraryKiosk() {
                           transition={{ repeat: Number.POSITIVE_INFINITY, duration: 3.5 }}
                           className="absolute top-1/4 -left-6"
                         >
-                          <Sparkles className="h-10 w-10 text-yellow-400" />
+                          <Sparkles className="h-6 w-6 md:h-10 md:w-10 text-yellow-400" />
                         </motion.div>
                         <motion.div
                           animate={{
@@ -884,7 +886,7 @@ export default function LibraryKiosk() {
                           transition={{ repeat: Number.POSITIVE_INFINITY, duration: 4.2 }}
                           className="absolute top-3/4 -right-6"
                         >
-                          <Sparkles className="h-8 w-8 text-green-400" />
+                          <Sparkles className="h-5 w-5 md:h-8 md:w-8 text-green-400" />
                         </motion.div>
                       </>
                     )}
@@ -897,8 +899,8 @@ export default function LibraryKiosk() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className={`relative bg-white p-8 rounded-3xl border border-blue-100 shadow-2xl ${
-                  robotState === "greeting" ? "max-w-lg" : "max-w-md"
+                className={`relative bg-white p-4 md:p-8 rounded-2xl md:rounded-3xl border border-blue-100 shadow-2xl ${
+                  robotState === "greeting" ? "max-w-sm md:max-w-lg" : "max-w-xs md:max-w-md"
                 }`}
               >
                 {/* Speech pointer */}
@@ -906,7 +908,7 @@ export default function LibraryKiosk() {
 
                 <p
                   className={`text-slate-700 font-semibold text-center leading-relaxed ${
-                    robotState === "greeting" ? "text-2xl" : "text-xl"
+                    robotState === "greeting" ? "text-lg md:text-2xl" : "text-base md:text-xl"
                   }`}
                 >
                   {getRobotMessage()}
@@ -934,24 +936,24 @@ export default function LibraryKiosk() {
             </div>
 
 
-            {/* Input Section - KIOSK OPTIMIZED */}
-            <div className="mb-16 relative">
+            {/* Input Section - RESPONSIVE */}
+            <div className="mb-8 md:mb-16 relative">
               {robotState === "greeting" ? (
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <Button
                     onClick={startRecommendation}
-                    className="w-full h-20 text-2xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-3xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300"
+                    className="w-full h-16 md:h-20 text-lg md:text-2xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-2xl md:rounded-3xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300"
                   >
                     📚 Evet, kitap öner!
                   </Button>
                 </motion.div>
               ) : robotState === "askFavorites" ? (
-                <div className="space-y-6">
-                  {/* Input Area - KIOSK OPTIMIZED */}
-                  <div className="bg-white rounded-3xl border-2 border-blue-200 p-6 shadow-2xl">
-                    <div className="flex items-center gap-4 mb-4">
-                      <BookOpen className="h-8 w-8 text-blue-600" />
-                      <h3 className="text-xl font-bold text-slate-800">Favori Kitaplarınızı Yazın</h3>
+                <div className="space-y-4 md:space-y-6">
+                  {/* Input Area - RESPONSIVE */}
+                  <div className="bg-white rounded-2xl md:rounded-3xl border-2 border-blue-200 p-4 md:p-6 shadow-2xl">
+                    <div className="flex items-center gap-2 md:gap-4 mb-3 md:mb-4">
+                      <BookOpen className="h-6 w-6 md:h-8 md:w-8 text-blue-600" />
+                      <h3 className="text-lg md:text-xl font-bold text-slate-800">Favori Kitaplarınızı Yazın</h3>
                     </div>
                     
                     <Input
@@ -959,7 +961,7 @@ export default function LibraryKiosk() {
                       placeholder="Örn: Harry Potter, Suç ve Ceza, 1984, Simyacı..."
                       value={favoriteBooks}
                       onChange={(e) => setFavoriteBooks(e.target.value)}
-                      className="h-16 text-xl bg-blue-50/50 border-2 border-blue-200 focus:border-blue-400 rounded-2xl px-6 text-slate-700 placeholder:text-slate-500 w-full font-medium"
+                      className="h-12 md:h-16 text-base md:text-xl bg-blue-50/50 border-2 border-blue-200 focus:border-blue-400 rounded-xl md:rounded-2xl px-4 md:px-6 text-slate-700 placeholder:text-slate-500 w-full font-medium"
                     />
                   </div>
 
@@ -967,21 +969,21 @@ export default function LibraryKiosk() {
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Button
                       onClick={() => handleFavoriteBooks(favoriteBooks)}
-                      className="w-full h-20 text-2xl bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold rounded-3xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3"
+                      className="w-full h-16 md:h-20 text-lg md:text-2xl bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold rounded-2xl md:rounded-3xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3"
                     >
-                      <Sparkles className="h-8 w-8" />
+                      <Sparkles className="h-6 w-6 md:h-8 md:w-8" />
                       Kitap Önerisi Al
-                      <ChevronRight className="h-8 w-8" />
+                      <ChevronRight className="h-6 w-6 md:h-8 md:w-8" />
                     </Button>
                   </motion.div>
                 </div>
               ) : (
-                <div className="space-y-6">
-                  {/* Search Area - KIOSK OPTIMIZED */}
-                  <div className="bg-white rounded-3xl border-2 border-blue-200 p-6 shadow-2xl">
-                    <div className="flex items-center gap-4 mb-4">
-                      <Search className="h-8 w-8 text-blue-600" />
-                      <h3 className="text-xl font-bold text-slate-800">Kitap Arayın</h3>
+                <div className="space-y-4 md:space-y-6">
+                  {/* Search Area - RESPONSIVE */}
+                  <div className="bg-white rounded-2xl md:rounded-3xl border-2 border-blue-200 p-4 md:p-6 shadow-2xl">
+                    <div className="flex items-center gap-2 md:gap-4 mb-3 md:mb-4">
+                      <Search className="h-6 w-6 md:h-8 md:w-8 text-blue-600" />
+                      <h3 className="text-lg md:text-xl font-bold text-slate-800">Kitap Arayın</h3>
                     </div>
                     
                     <Input
@@ -989,7 +991,7 @@ export default function LibraryKiosk() {
                       placeholder="Kitap adı, yazar adı veya 'kitapları göster' yazın..."
                       value={searchQuery}
                       onChange={(e) => handleSearch(e.target.value)}
-                      className="h-16 text-xl bg-blue-50/50 border-2 border-blue-200 focus:border-blue-400 rounded-2xl px-6 text-slate-700 placeholder:text-slate-500 w-full font-medium"
+                      className="h-12 md:h-16 text-base md:text-xl bg-blue-50/50 border-2 border-blue-200 focus:border-blue-400 rounded-xl md:rounded-2xl px-4 md:px-6 text-slate-700 placeholder:text-slate-500 w-full font-medium"
                     />
                   </div>
 
@@ -997,11 +999,11 @@ export default function LibraryKiosk() {
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Button
                       onClick={() => handleSearch(searchQuery)}
-                      className="w-full h-20 text-2xl bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-bold rounded-3xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3"
+                      className="w-full h-16 md:h-20 text-lg md:text-2xl bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-bold rounded-2xl md:rounded-3xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3"
                     >
-                      <Search className="h-8 w-8" />
+                      <Search className="h-6 w-6 md:h-8 md:w-8" />
                       Kitap Ara
-                      <ChevronRight className="h-8 w-8" />
+                      <ChevronRight className="h-6 w-6 md:h-8 md:w-8" />
                     </Button>
                   </motion.div>
                 </div>
@@ -1011,13 +1013,13 @@ export default function LibraryKiosk() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-red-50 border-2 border-red-200 rounded-3xl p-6 shadow-xl"
+                  className="bg-red-50 border-2 border-red-200 rounded-2xl md:rounded-3xl p-4 md:p-6 shadow-xl"
                 >
-                  <div className="flex items-center gap-3 justify-center">
-                    <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">!</span>
+                  <div className="flex items-center gap-2 md:gap-3 justify-center">
+                    <div className="w-5 h-5 md:w-6 md:h-6 bg-red-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs md:text-sm font-bold">!</span>
                     </div>
-                    <p className="text-red-700 text-lg font-medium text-center">
+                    <p className="text-red-700 text-base md:text-lg font-medium text-center">
                       {errorMessage ||
                         "Bu konuda yardımcı olamıyorum. Lütfen kitap, yazar veya tür ile ilgili arama yapın."}
                     </p>
@@ -1160,14 +1162,14 @@ export default function LibraryKiosk() {
                   <span>Kitap bulunamadı.</span>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-4 w-full max-w-lg pb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full max-w-sm md:max-w-lg pb-4">
                   {filteredBooks.map((book, index) => (
                     <motion.div
                       key={book.id}
                       initial={{ opacity: 0, y: 15, rotateY: -20 }}
                       animate={{ opacity: 1, y: 0, rotateY: 0 }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="flex flex-col items-center bg-white/50 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-blue-100/50"
+                      className="flex flex-col items-center bg-white/50 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-4 shadow-lg border border-blue-100/50"
                     >
                       {/* ENHANCED Book Display */}
                       <motion.div
@@ -1182,7 +1184,7 @@ export default function LibraryKiosk() {
                           rotateZ: { repeat: Number.POSITIVE_INFINITY, duration: 5 + index * 0.3, ease: "easeInOut" },
                           scale: { repeat: Number.POSITIVE_INFINITY, duration: 3 + index * 0.15, ease: "easeInOut" },
                         }}
-                        className="w-40 h-60 relative perspective-1000 mb-4"
+                        className="w-32 h-48 md:w-40 md:h-60 relative perspective-1000 mb-3 md:mb-4"
                       >
                         {/* Enhanced Book Cover */}
                         <div
@@ -1201,19 +1203,19 @@ export default function LibraryKiosk() {
                           </div>
 
                           {/* Book content */}
-                          <div className="absolute inset-0 flex flex-col items-center justify-center p-2 text-center">
-                            <div className="w-8 h-8 mb-3 bg-white/20 rounded-full flex items-center justify-center">
-                              <Book className="h-5 w-5 text-white" />
+                          <div className="absolute inset-0 flex flex-col items-center justify-center p-1.5 md:p-2 text-center">
+                            <div className="w-6 h-6 md:w-8 md:h-8 mb-2 md:mb-3 bg-white/20 rounded-full flex items-center justify-center">
+                              <Book className="h-3 w-3 md:h-5 md:w-5 text-white" />
                             </div>
 
-                            <h3 className="text-sm font-bold text-white mb-2 drop-shadow-lg leading-tight line-clamp-3">
+                            <h3 className="text-xs md:text-sm font-bold text-white mb-1 md:mb-2 drop-shadow-lg leading-tight line-clamp-3">
                               {book.title}
                             </h3>
-                            <div className="w-8 h-px bg-white/50 my-2"></div>
-                            <p className="text-white/90 font-medium text-xs leading-tight line-clamp-2 mb-1">
+                            <div className="w-6 md:w-8 h-px bg-white/50 my-1 md:my-2"></div>
+                            <p className="text-white/90 font-medium text-[10px] md:text-xs leading-tight line-clamp-2 mb-1">
                               {book.author}
                             </p>
-                            <p className="text-white/70 font-normal text-[10px] leading-tight line-clamp-1">
+                            <p className="text-white/70 font-normal text-[8px] md:text-[10px] leading-tight line-clamp-1">
                               {book.genre}
                             </p>
 
@@ -1222,7 +1224,7 @@ export default function LibraryKiosk() {
                             <div className="absolute bottom-2 left-2 w-2 h-2 bg-white/30 rounded-full"></div>
                             
                             {/* Stock indicator */}
-                            <div className="absolute top-2 left-2 bg-green-500/80 text-white text-[8px] px-1.5 py-0.5 rounded-full font-bold">
+                            <div className="absolute top-1 md:top-2 left-1 md:left-2 bg-green-500/80 text-white text-[7px] md:text-[8px] px-1 md:px-1.5 py-0.5 rounded-full font-bold">
                               {book.available_copies} adet
                             </div>
                           </div>
@@ -1235,11 +1237,11 @@ export default function LibraryKiosk() {
                         <div className="absolute -bottom-1 left-0 right-0 h-2 bg-black/20 blur-sm rounded-full mx-2"></div>
                       </motion.div>
 
-                      {/* Book Title Below - Larger */}
-                      <div className="text-center max-w-[160px]">
-                        <h4 className="text-sm font-bold text-slate-800 mb-1 line-clamp-2 leading-tight">{book.title}</h4>
-                        <p className="text-xs text-slate-600 mb-0.5">{book.author}</p>
-                        <p className="text-[10px] text-blue-600 font-medium">{book.genre}</p>
+                      {/* Book Title Below - Responsive */}
+                      <div className="text-center max-w-[130px] md:max-w-[160px]">
+                        <h4 className="text-xs md:text-sm font-bold text-slate-800 mb-1 line-clamp-2 leading-tight">{book.title}</h4>
+                        <p className="text-[10px] md:text-xs text-slate-600 mb-0.5">{book.author}</p>
+                        <p className="text-[8px] md:text-[10px] text-blue-600 font-medium">{book.genre}</p>
                       </div>
                     </motion.div>
                   ))}
@@ -1247,35 +1249,38 @@ export default function LibraryKiosk() {
               )}
             </motion.div>
 
-            {/* COMPACT Action Buttons - Fixed Bottom */}
-            <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-blue-100 p-4 mt-4">
-              <div className="flex gap-2 justify-center">
+            {/* RESPONSIVE Action Buttons - Fixed Bottom */}
+            <div className="sticky bottom-0 bg-white/90 backdrop-blur-sm border-t border-blue-100 p-3 md:p-4 mt-3 md:mt-4">
+              <div className="flex flex-col md:flex-row gap-2 justify-center">
                 <Button
                   onClick={resetToHome}
-                  className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg shadow-lg text-xs"
+                  className="px-3 md:px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg shadow-lg text-xs md:text-sm"
                 >
                   Yeni Öneri Al
                 </Button>
                 <Button
                   onClick={handleAlternativeRecommendation}
-                  className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg shadow-lg text-xs flex items-center gap-1"
+                  className="px-3 md:px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg shadow-lg text-xs md:text-sm flex items-center justify-center gap-1"
                 >
                   <RefreshCw className="h-3 w-3" />
-                  Farklı Kitap Önerisi İste
+                  <span className="hidden md:inline">Farklı Kitap Önerisi İste</span>
+                  <span className="md:hidden">Farklı Öneri</span>
                 </Button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Footer - KIOSK OPTIMIZED */}
+        {/* Footer - RESPONSIVE */}
         {robotState !== "showBooks" && robotState !== "preparing" && robotState !== "noRecommendations" && (
-          <div className="mt-auto pt-8 text-center">
-            <div className="flex items-center justify-center gap-3 text-slate-600 text-lg font-medium">
-              <Book className="h-6 w-6" />
-              <span>Bartın Üniversitesi Kütüphanesi</span>
-              <span>•</span>
-              <span>Bilgiye açılan kapınız</span>
+          <div className="mt-auto pt-6 md:pt-8 text-center">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3 text-slate-600 text-sm md:text-lg font-medium">
+              <div className="flex items-center gap-2">
+                <Book className="h-4 w-4 md:h-6 md:w-6" />
+                <span>Bartın Üniversitesi Kütüphanesi</span>
+              </div>
+              <span className="hidden md:inline">•</span>
+              <span className="text-xs md:text-base">Bilgiye açılan kapınız</span>
             </div>
           </div>
         )}
@@ -1295,55 +1300,55 @@ export default function LibraryKiosk() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="bg-white rounded-3xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+            className="bg-white rounded-2xl md:rounded-3xl p-4 md:p-8 max-w-xs md:max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-                  <Eye className="h-6 w-6 text-white" />
+            <div className="flex items-center justify-between mb-4 md:mb-8">
+              <div className="flex items-center gap-2 md:gap-4">
+                <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg md:rounded-xl flex items-center justify-center">
+                  <Eye className="h-4 w-4 md:h-6 md:w-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-3xl font-bold text-slate-800">Kiosk Örnekleri</h2>
-                  <p className="text-slate-600">Gerçek kütüphanedeki görünüm</p>
+                  <h2 className="text-xl md:text-3xl font-bold text-slate-800">Kiosk Örnekleri</h2>
+                  <p className="text-xs md:text-base text-slate-600">Gerçek kütüphanedeki görünüm</p>
                 </div>
               </div>
               <Button
                 onClick={() => setShowKioskExamples(false)}
                 variant="outline"
-                size="lg"
-                className="rounded-full w-12 h-12 p-0"
+                size={isMobile ? "sm" : "lg"}
+                className="rounded-full w-8 h-8 md:w-12 md:h-12 p-0"
               >
-                <X className="h-6 w-6" />
+                <X className="h-4 w-4 md:h-6 md:w-6" />
               </Button>
             </div>
 
             {/* Image Gallery */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
               {/* Kiosk 1 */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="space-y-4"
+                className="space-y-3 md:space-y-4"
               >
-                <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-blue-50 to-blue-100 p-4">
+                <div className="relative rounded-xl md:rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-blue-50 to-blue-100 p-2 md:p-4">
                   <Image
                     src="/images/kiosk1.jpg"
                     alt="Kütüphane Kiosk Örnek 1"
-                    width={600}
-                    height={800}
-                    className="w-full h-auto rounded-xl shadow-lg"
+                    width={isMobile ? 300 : 600}
+                    height={isMobile ? 400 : 800}
+                    className="w-full h-auto rounded-lg md:rounded-xl shadow-lg"
                     priority
                   />
-                  <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                    <span className="text-sm font-semibold text-blue-700">Örnek 1</span>
+                  <div className="absolute top-3 md:top-6 left-3 md:left-6 bg-white/90 backdrop-blur-sm px-2 md:px-3 py-1 rounded-full">
+                    <span className="text-xs md:text-sm font-semibold text-blue-700">Örnek 1</span>
                   </div>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">Dokunmatik Kiosk Sistemi</h3>
-                  <p className="text-slate-600">AI destekli kitap önerileri ile kişiselleştirilmiş kütüphane deneyimi sunar.</p>
+                  <h3 className="text-lg md:text-xl font-bold text-slate-800 mb-1 md:mb-2">Dokunmatik Kiosk Sistemi</h3>
+                  <p className="text-xs md:text-base text-slate-600">AI destekli kitap önerileri ile kişiselleştirilmiş kütüphane deneyimi sunar.</p>
                 </div>
               </motion.div>
 
@@ -1352,24 +1357,24 @@ export default function LibraryKiosk() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="space-y-4"
+                className="space-y-3 md:space-y-4"
               >
-                <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-green-50 to-green-100 p-4">
+                <div className="relative rounded-xl md:rounded-2xl overflow-hidden shadow-xl bg-gradient-to-br from-green-50 to-green-100 p-2 md:p-4">
                   <Image
                     src="/images/kiosk2.jpg"
                     alt="Kütüphane Kiosk Örnek 2"
-                    width={600}
-                    height={800}
-                    className="w-full h-auto rounded-xl shadow-lg"
+                    width={isMobile ? 300 : 600}
+                    height={isMobile ? 400 : 800}
+                    className="w-full h-auto rounded-lg md:rounded-xl shadow-lg"
                     priority
                   />
-                  <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                    <span className="text-sm font-semibold text-green-700">Örnek 2</span>
+                  <div className="absolute top-3 md:top-6 left-3 md:left-6 bg-white/90 backdrop-blur-sm px-2 md:px-3 py-1 rounded-full">
+                    <span className="text-xs md:text-sm font-semibold text-green-700">Örnek 2</span>
                   </div>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">Akıllı Kitap Keşfi</h3>
-                  <p className="text-slate-600">Favori kitaplarınızı yazın, size özel öneriler alın ve kütüphaneden hemen bulun.</p>
+                  <h3 className="text-lg md:text-xl font-bold text-slate-800 mb-1 md:mb-2">Akıllı Kitap Keşfi</h3>
+                  <p className="text-xs md:text-base text-slate-600">Favori kitaplarınızı yazın, size özel öneriler alın ve kütüphaneden hemen bulun.</p>
                 </div>
               </motion.div>
             </div>
@@ -1379,13 +1384,13 @@ export default function LibraryKiosk() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl border border-blue-200"
+              className="mt-4 md:mt-8 p-3 md:p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl md:rounded-2xl border border-blue-200"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <Sparkles className="h-6 w-6 text-blue-600" />
-                <h4 className="text-lg font-semibold text-slate-800">KitapGPT Kiosk Sistemi</h4>
+              <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
+                <Sparkles className="h-4 w-4 md:h-6 md:w-6 text-blue-600" />
+                <h4 className="text-base md:text-lg font-semibold text-slate-800">KitapGPT Kiosk Sistemi</h4>
               </div>
-              <p className="text-slate-600 leading-relaxed">
+              <p className="text-xs md:text-base text-slate-600 leading-relaxed">
                 Bartın Üniversitesi Kütüphanesi'nde yer alan bu akıllı kiosk sistemi, 
                 öğrencilerin kitap keşfetmesini ve kütüphane kaynaklarına kolay erişim sağlamasını amaçlar. 
                 AI destekli öneri algoritması ile kişiselleştirilmiş kitap önerileri sunar.
@@ -1393,7 +1398,7 @@ export default function LibraryKiosk() {
             </motion.div>
 
             {/* Close Button */}
-            <div className="mt-8 text-center">
+            <div className="mt-4 md:mt-8 text-center">
               <Button
                 onClick={() => {
                   setShowKioskExamples(false)
@@ -1401,7 +1406,7 @@ export default function LibraryKiosk() {
                   localStorage.setItem('kitapgpt-examples-shown', 'true')
                   localStorage.setItem('kitapgpt-examples-time', Date.now().toString())
                 }}
-                className="px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-2xl shadow-lg"
+                className="px-4 md:px-8 py-2 md:py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl md:rounded-2xl shadow-lg text-sm md:text-base"
               >
                 ✓ Tamam, Anladım
               </Button>
