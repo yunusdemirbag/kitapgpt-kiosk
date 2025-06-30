@@ -1,16 +1,18 @@
-import { createClient } from "@supabase/supabase-js"
+// Mock Supabase client - no database dependency
+export const supabase = {
+  from: () => ({
+    select: () => ({
+      data: [],
+      error: null
+    }),
+    insert: () => ({
+      data: [],
+      error: null
+    })
+  })
+}
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
-// Server-side client with service role key
-const supabaseServiceKey =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFiZHpjbXFjc25ldnpocHpkaGt4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0ODAwODc1MCwiZXhwIjoyMDYzNTg0NzUwfQ.wbF2CmD-EIuKS06AGwdXWF4K-3tAfyIL0ZYjVI6Es-M"
-
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
+export const supabaseAdmin = supabase
 
 // Database types
 export interface Book {
