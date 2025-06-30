@@ -1340,8 +1340,8 @@ export default function LibraryKiosk() {
                   </div>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">Kütüphane Girişi</h3>
-                  <p className="text-slate-600">Ana giriş alanındaki kiosk konumu</p>
+                  <h3 className="text-xl font-bold text-slate-800 mb-2">Dokunmatik Kiosk Sistemi</h3>
+                  <p className="text-slate-600">AI destekli kitap önerileri ile kişiselleştirilmiş kütüphane deneyimi sunar.</p>
                 </div>
               </motion.div>
 
@@ -1366,8 +1366,8 @@ export default function LibraryKiosk() {
                   </div>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">İç Mekan Yerleşimi</h3>
-                  <p className="text-slate-600">Öğrenci erişim alanındaki konum</p>
+                  <h3 className="text-xl font-bold text-slate-800 mb-2">Akıllı Kitap Keşfi</h3>
+                  <p className="text-slate-600">Favori kitaplarınızı yazın, size özel öneriler alın ve kütüphaneden hemen bulun.</p>
                 </div>
               </motion.div>
             </div>
