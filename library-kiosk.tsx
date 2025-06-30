@@ -42,6 +42,33 @@ export default function LibraryKiosk() {
     return () => clearTimeout(timer)
   }, [robotAnimation])
 
+  // Auto-show kiosk examples on first visit
+  useEffect(() => {
+    const hasSeenExamples = localStorage.getItem('kitapgpt-examples-shown')
+    const lastShownTime = localStorage.getItem('kitapgpt-examples-time')
+    
+    if (!hasSeenExamples || !lastShownTime) {
+      // First time visitor - show immediately
+      const timer = setTimeout(() => {
+        setShowKioskExamples(true)
+      }, 2000) // 2 seconds after page load
+      
+      return () => clearTimeout(timer)
+    } else {
+      // Check if 5 minutes have passed
+      const fiveMinutes = 5 * 60 * 1000 // 5 minutes in milliseconds
+      const timeDiff = Date.now() - parseInt(lastShownTime)
+      
+      if (timeDiff >= fiveMinutes) {
+        const timer = setTimeout(() => {
+          setShowKioskExamples(true)
+        }, 2000)
+        
+        return () => clearTimeout(timer)
+      }
+    }
+  }, [])
+
 
   // Auto redirect timer for results page and no recommendations page
   useEffect(() => {
@@ -1363,13 +1390,25 @@ export default function LibraryKiosk() {
               </p>
             </motion.div>
 
-            {/* Close Button */}
-            <div className="mt-8 text-center">
+            {/* Close Buttons */}
+            <div className="mt-8 flex gap-4 justify-center">
+              <Button
+                onClick={() => {
+                  setShowKioskExamples(false)
+                  // Mark as seen and set current time
+                  localStorage.setItem('kitapgpt-examples-shown', 'true')
+                  localStorage.setItem('kitapgpt-examples-time', Date.now().toString())
+                }}
+                className="px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-2xl shadow-lg"
+              >
+                ✓ Tamam, Anladım
+              </Button>
               <Button
                 onClick={() => setShowKioskExamples(false)}
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-2xl shadow-lg"
+                variant="outline"
+                className="px-8 py-3 rounded-2xl border-2"
               >
-                Kapat
+                Şimdilik Kapat
               </Button>
             </div>
           </motion.div>
